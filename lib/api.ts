@@ -86,8 +86,8 @@ export const ApiService = {
     return data;
   },
 
-  async getFraudStatistics(): Promise<any> {
-    const { data } = await api.get('/api/fraud-statistics');
+  async getFraudDashboard(): Promise<any> {
+    const { data } = await api.get('/api/fraud-dashboard');
     return data;
   },
 };

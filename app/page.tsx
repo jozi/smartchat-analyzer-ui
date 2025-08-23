@@ -5,6 +5,7 @@ import StatsGrid from '@/components/StatsGrid';
 import ControlPanel from '@/components/ControlPanel';
 import ResultsList from '@/components/ResultsList';
 import FilterBar from '@/components/FilterBar';
+import FraudResultsModal from '@/components/FraudResultsModal';
 import { ApiService } from '@/lib/api';
 import { DashboardData, FilterType } from '@/lib/types';
 
@@ -13,6 +14,8 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<FilterType>('all');
   const [page, setPage] = useState(1);
+  const [fraudResults, setFraudResults] = useState<any>(null);
+  const [showFraudModal, setShowFraudModal] = useState(false);
 
   useEffect(() => {
     fetchDashboardData();
@@ -62,10 +65,8 @@ export default function HomePage() {
   const handleAnalyzeFraud = async (limit: number) => {
     try {
       const result = await ApiService.analyzeFraud(limit);
-      alert(`تحلیل کلاهبرداری انجام شد!\n
-تعداد چت‌های بررسی شده: ${result.analyzed_count}
-تعداد کلاهبرداری تشخیص داده شده: ${result.fraud_detected_count}
-نرخ تشخیص: ${result.fraud_detection_rate}%`);
+      setFraudResults(result);
+      setShowFraudModal(true);
       await fetchDashboardData();
     } catch (error) {
       console.error('Error analyzing fraud:', error);
@@ -127,6 +128,13 @@ export default function HomePage() {
           />
         )}
       </div>
+
+      {/* Fraud Results Modal */}
+      <FraudResultsModal
+        isOpen={showFraudModal}
+        onClose={() => setShowFraudModal(false)}
+        results={fraudResults}
+      />
     </div>
   );
 }
