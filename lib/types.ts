@@ -16,21 +16,23 @@ export interface Stats {
 
 export interface AnalysisResult {
   id: number;
-  storedChatId: number;
-  conversationId: string;
-  triggeringMessage: string;
-  isWholesaleDetectedByGpt: boolean;
-  isExportDetectedByGpt: boolean;
-  isExitDetectedByGpt: boolean;
-  isPriceNegotiationDetectedByGpt: boolean;
-  wholesaleDetectionScoreGpt: number;
-  exportDetectionScoreGpt: number;
-  exitDetectionScoreGpt: number;
-  priceNegotiationScoreGpt: number;
-  gptExplanation?: string;
-  analyzedAt: string;
-  humanFeedbackConfirmsGpt?: boolean;
-  humanFeedbackReason?: string;
+  stored_chat_id: number;
+  conversation_id: string;
+  vendor_user: string;
+  customer_user: string;
+  trigger_message: string;
+  is_wholesale: boolean;
+  wholesale_score: number;
+  is_export: boolean;
+  export_score: number;
+  is_exit: boolean;
+  exit_score: number;
+  is_price_negotiation: boolean;
+  price_negotiation_score: number;
+  gpt_response?: string;
+  analyzed_at: string;
+  human_feedback_confirms_gpt?: boolean;
+  human_feedback_reason?: string;
 }
 
 export interface DashboardData {

@@ -12,17 +12,21 @@ const api = axios.create({
 
 export const ApiService = {
   async getDashboard(page: number = 1, limit: number = 25, filterType: FilterType = 'all'): Promise<DashboardData> {
-    const { data } = await api.get('/', {
-      params: {
-        page,
-        limit_per_page: limit,
-        filter_type: filterType,
-      },
-    });
-    
-    // Parse HTML response to extract data (temporary until we have proper API)
-    // In production, this should return JSON from backend
-    return this.parseDashboardHTML(data);
+    try {
+      // Get JSON data from backend API
+      const { data } = await api.get('/api/dashboard', {
+        params: {
+          page,
+          limit_per_page: limit,
+          filter_type: filterType,
+        },
+      });
+      
+      return data;
+    } catch (error) {
+      console.error('Error fetching dashboard:', error);
+      throw error;
+    }
   },
 
   async fetchAndStoreChats(limit: number): Promise<void> {
@@ -68,32 +72,5 @@ export const ApiService = {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
-  },
-
-  // Temporary function to parse HTML response
-  // This should be replaced with proper JSON API
-  parseDashboardHTML(html: string): DashboardData {
-    // This is a placeholder - in production, backend should return JSON
-    // For now, we'll return mock data
-    return {
-      stats: {
-        wholesaleCount: 0,
-        exportCount: 0,
-        exitCount: 0,
-        priceNegotiationCount: 0,
-        combinedCount: 0,
-        wholesalePercentage: 0,
-        exportPercentage: 0,
-        exitPercentage: 0,
-        priceNegotiationPercentage: 0,
-        combinedPercentage: 0,
-        aiAccuracy: 0,
-      },
-      totalStoredChats: 0,
-      unanalyzedChats: 0,
-      results: [],
-      currentPage: 1,
-      totalPages: 1,
-    };
   },
 };

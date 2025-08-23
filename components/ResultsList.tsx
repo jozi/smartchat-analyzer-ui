@@ -39,45 +39,45 @@ export default function ResultsList({
             <div className="flex justify-between items-start mb-4">
               <div className="flex-1">
                 <div className="flex flex-wrap gap-2 mb-2">
-                  {result.isWholesaleDetectedByGpt && (
+                  {result.is_wholesale && (
                     <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
-                      📦 عمده ({result.wholesaleDetectionScoreGpt}/5)
+                      📦 عمده ({result.wholesale_score}/5)
                     </span>
                   )}
-                  {result.isExportDetectedByGpt && (
+                  {result.is_export && (
                     <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                      🌍 صادراتی ({result.exportDetectionScoreGpt}/5)
+                      🌍 صادراتی ({result.export_score}/5)
                     </span>
                   )}
-                  {result.isExitDetectedByGpt && (
+                  {result.is_exit && (
                     <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-medium">
-                      🚪 خروج ({result.exitDetectionScoreGpt}/10)
+                      🚪 خروج ({result.exit_score}/10)
                     </span>
                   )}
-                  {result.isPriceNegotiationDetectedByGpt && (
+                  {result.is_price_negotiation && (
                     <span className="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium">
-                      🤝 مذاکره ({result.priceNegotiationScoreGpt}/10)
+                      🤝 مذاکره ({result.price_negotiation_score}/10)
                     </span>
                   )}
                 </div>
                 <p className="text-gray-700 mb-2">
-                  <strong>پیام ماشه:</strong> {result.triggeringMessage}
+                  <strong>پیام ماشه:</strong> {result.trigger_message}
                 </p>
-                {result.gptExplanation && (
+                {result.gpt_response && (
                   <p className="text-sm text-gray-600">
-                    <strong>توضیح AI:</strong> {result.gptExplanation}
+                    <strong>توضیح AI:</strong> {result.gpt_response}
                   </p>
                 )}
               </div>
               <button
-                onClick={() => setSelectedChatId(result.storedChatId)}
+                onClick={() => setSelectedChatId(result.stored_chat_id)}
                 className="btn btn-primary text-sm"
               >
                 مشاهده گفتگو
               </button>
             </div>
             <div className="text-xs text-gray-500">
-              شناسه گفتگو: {result.conversationId} | تحلیل شده در: {new Date(result.analyzedAt).toLocaleDateString('fa-IR')}
+              شناسه گفتگو: {result.conversation_id} | تحلیل شده در: {new Date(result.analyzed_at).toLocaleDateString('fa-IR')}
             </div>
           </div>
         ))}
