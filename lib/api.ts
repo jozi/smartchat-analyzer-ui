@@ -30,10 +30,10 @@ export const ApiService = {
   },
 
   async fetchAndStoreChats(limit: number): Promise<void> {
-    const formData = new FormData();
-    formData.append('limit', limit.toString());
+    const params = new URLSearchParams();
+    params.append('limit', limit.toString());
     
-    await api.post('/fetch-and-store-chats', formData, {
+    await api.post('/fetch-and-store-chats', params, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -41,10 +41,10 @@ export const ApiService = {
   },
 
   async analyzeStoredChats(analysisLimit: number): Promise<void> {
-    const formData = new FormData();
-    formData.append('analysis_limit', analysisLimit.toString());
+    const params = new URLSearchParams();
+    params.append('analysis_limit', analysisLimit.toString());
     
-    await api.post('/analyze-stored-chats', formData, {
+    await api.post('/analyze-stored-chats', params, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
@@ -61,13 +61,13 @@ export const ApiService = {
   },
 
   async submitFeedback(resultId: number, feedback: 'confirm' | 'reject', reason?: string): Promise<void> {
-    const formData = new FormData();
-    formData.append('feedback', feedback);
+    const params = new URLSearchParams();
+    params.append('feedback', feedback);
     if (reason) {
-      formData.append('reason', reason);
+      params.append('reason', reason);
     }
     
-    await api.post(`/submit-feedback/${resultId}`, formData, {
+    await api.post(`/submit-feedback/${resultId}`, params, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },

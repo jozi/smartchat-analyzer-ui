@@ -63,11 +63,43 @@ export default function ResultsList({
                 <p className="text-gray-700 mb-2">
                   <strong>پیام ماشه:</strong> {result.trigger_message}
                 </p>
-                {result.gpt_response && (
-                  <p className="text-sm text-gray-600">
-                    <strong>توضیح AI:</strong> {result.gpt_response}
-                  </p>
-                )}
+                
+                {/* GPT Analysis Details */}
+                <div className="mt-3 space-y-2">
+                  {result.is_wholesale && result.wholesale_score && (
+                    <div className="text-sm bg-blue-50 p-2 rounded">
+                      <strong className="text-blue-700">تحلیل عمده:</strong>
+                      <span className="text-gray-700"> امتیاز {result.wholesale_score}/5</span>
+                    </div>
+                  )}
+                  
+                  {result.is_export && result.export_score && (
+                    <div className="text-sm bg-green-50 p-2 rounded">
+                      <strong className="text-green-700">تحلیل صادرات:</strong>
+                      <span className="text-gray-700"> امتیاز {result.export_score}/5</span>
+                    </div>
+                  )}
+                  
+                  {result.is_exit && result.exit_score && (
+                    <div className="text-sm bg-red-50 p-2 rounded">
+                      <strong className="text-red-700">ریسک خروج:</strong>
+                      <span className="text-gray-700"> امتیاز {result.exit_score}/10</span>
+                    </div>
+                  )}
+                  
+                  {result.is_price_negotiation && result.price_negotiation_score && (
+                    <div className="text-sm bg-yellow-50 p-2 rounded">
+                      <strong className="text-yellow-700">مذاکره قیمت:</strong>
+                      <span className="text-gray-700"> امتیاز {result.price_negotiation_score}/10</span>
+                    </div>
+                  )}
+                  
+                  {result.gpt_response && (
+                    <div className="text-sm text-gray-600 italic mt-2">
+                      <strong>دلیل AI:</strong> {result.gpt_response}
+                    </div>
+                  )}
+                </div>
               </div>
               <button
                 onClick={() => setSelectedChatId(result.stored_chat_id)}
