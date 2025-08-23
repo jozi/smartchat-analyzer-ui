@@ -6,7 +6,7 @@ interface StatsGridProps {
 
 export default function StatsGrid({ stats }: StatsGridProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-8">
       {/* Wholesale */}
       <div className="stat-card bg-gradient-to-br from-blue-50 to-blue-100 border-l-4 border-blue-500">
         <div className="flex items-center justify-between">
@@ -64,6 +64,18 @@ export default function StatsGrid({ stats }: StatsGridProps) {
             <p className="text-xs text-gray-500">{stats.combinedPercentage}%</p>
           </div>
           <div className="text-3xl text-purple-500">🚀</div>
+        </div>
+      </div>
+
+      {/* Fraud Detection */}
+      <div className="stat-card bg-gradient-to-br from-orange-50 to-orange-100 border-l-4 border-orange-500">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm text-gray-600">تشخیص کلاهبرداری</p>
+            <p className="text-2xl font-bold text-gray-900">{stats.fraudDetected}</p>
+            <p className="text-xs text-gray-500">{stats.fraudDetectionRate}%</p>
+          </div>
+          <div className="text-3xl text-orange-500">🛡️</div>
         </div>
       </div>
     </div>

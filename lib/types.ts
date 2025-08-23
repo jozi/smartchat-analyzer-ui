@@ -12,6 +12,9 @@ export interface Stats {
   priceNegotiationPercentage: number;
   combinedPercentage: number;
   aiAccuracy: number;
+  fraudDetected: number;
+  fraudAnalyses: number;
+  fraudDetectionRate: number;
 }
 
 export interface AnalysisResult {

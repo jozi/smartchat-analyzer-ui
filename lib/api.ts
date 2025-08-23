@@ -73,4 +73,21 @@ export const ApiService = {
       },
     });
   },
+
+  async analyzeFraud(limit: number): Promise<any> {
+    const params = new URLSearchParams();
+    params.append('analysis_limit', limit.toString());
+    
+    const { data } = await api.post('/analyze-fraud', params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+    return data;
+  },
+
+  async getFraudStatistics(): Promise<any> {
+    const { data } = await api.get('/api/fraud-statistics');
+    return data;
+  },
 };

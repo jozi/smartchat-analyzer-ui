@@ -59,6 +59,20 @@ export default function HomePage() {
     }
   };
 
+  const handleAnalyzeFraud = async (limit: number) => {
+    try {
+      const result = await ApiService.analyzeFraud(limit);
+      alert(`تحلیل کلاهبرداری انجام شد!\n
+تعداد چت‌های بررسی شده: ${result.analyzed_count}
+تعداد کلاهبرداری تشخیص داده شده: ${result.fraud_detected_count}
+نرخ تشخیص: ${result.fraud_detection_rate}%`);
+      await fetchDashboardData();
+    } catch (error) {
+      console.error('Error analyzing fraud:', error);
+      alert('خطا در تحلیل کلاهبرداری');
+    }
+  };
+
   if (loading && !data) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -93,6 +107,7 @@ export default function HomePage() {
           onFetchChats={handleFetchChats}
           onAnalyzeChats={handleAnalyzeChats}
           onResetAnalysis={handleResetAnalysis}
+          onAnalyzeFraud={handleAnalyzeFraud}
         />
 
         {/* Filter Bar */}

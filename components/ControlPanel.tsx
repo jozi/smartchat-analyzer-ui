@@ -8,6 +8,7 @@ interface ControlPanelProps {
   onFetchChats: (limit: number) => Promise<void>;
   onAnalyzeChats: (limit: number) => Promise<void>;
   onResetAnalysis: () => Promise<void>;
+  onAnalyzeFraud?: (limit: number) => Promise<void>;
 }
 
 export default function ControlPanel({
@@ -16,11 +17,14 @@ export default function ControlPanel({
   onFetchChats,
   onAnalyzeChats,
   onResetAnalysis,
+  onAnalyzeFraud,
 }: ControlPanelProps) {
   const [fetchLimit, setFetchLimit] = useState(1000);
   const [analyzeLimit, setAnalyzeLimit] = useState(100);
+  const [fraudLimit, setFraudLimit] = useState(50);
   const [fetchLoading, setFetchLoading] = useState(false);
   const [analyzeLoading, setAnalyzeLoading] = useState(false);
+  const [fraudLoading, setFraudLoading] = useState(false);
 
   const handleFetch = async () => {
     setFetchLoading(true);
@@ -37,6 +41,16 @@ export default function ControlPanel({
       await onAnalyzeChats(analyzeLimit);
     } finally {
       setAnalyzeLoading(false);
+    }
+  };
+
+  const handleFraudAnalysis = async () => {
+    if (!onAnalyzeFraud) return;
+    setFraudLoading(true);
+    try {
+      await onAnalyzeFraud(fraudLimit);
+    } finally {
+      setFraudLoading(false);
     }
   };
 
@@ -113,7 +127,7 @@ export default function ControlPanel({
             />
             <span className="text-sm text-gray-500">حداکثر ۱۰۰۰</span>
           </div>
-          <div className="mt-3">
+          <div className="mt-3 flex gap-2">
             <button
               onClick={onResetAnalysis}
               className="btn btn-warning text-sm"
@@ -123,6 +137,44 @@ export default function ControlPanel({
           </div>
         </div>
       </div>
+
+      {/* Fraud Detection Section */}
+      {onAnalyzeFraud && (
+        <div className="mt-6 pt-6 border-t-2 border-gray-200">
+          <h3 className="text-lg font-medium mb-3 text-red-600">
+            🚨 تشخیص کلاهبرداری و جعل هویت
+          </h3>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleFraudAnalysis}
+              disabled={fraudLoading}
+              className="btn bg-red-600 hover:bg-red-700 text-white"
+            >
+              {fraudLoading ? (
+                <>
+                  <span className="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span>
+                  در حال بررسی...
+                </>
+              ) : (
+                <>🔍 بررسی کاربران گزارش شده</>
+              )}
+            </button>
+            <input
+              type="number"
+              value={fraudLimit}
+              onChange={(e) => setFraudLimit(Number(e.target.value))}
+              min="1"
+              max="100"
+              className="w-32 px-3 py-2 border rounded-lg"
+              placeholder="تعداد"
+            />
+            <span className="text-sm text-gray-500">تحلیل چت‌های کاربران مشکوک</span>
+          </div>
+          <div className="mt-2 text-sm text-gray-600">
+            این قابلیت چت‌های کاربرانی که به دلیل جعل هویت گزارش شده‌اند را بررسی می‌کند
+          </div>
+        </div>
+      )}
     </div>
   );
 }
