@@ -2,9 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dana Font Family */
+@font-face {
+  font-family: 'Dana';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/DanaFaNum-Regular.woff2') format('woff2'),
+       url('/fonts/DanaFaNum-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Dana';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/DanaFaNum-Medium.woff2') format('woff2'),
+       url('/fonts/DanaFaNum-Medium.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Dana';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/DanaFaNum-Bold.woff2') format('woff2'),
+       url('/fonts/DanaFaNum-Bold.woff') format('woff');
+}
+
+/* IranYekan Font Family */
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan-medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: url('/fonts/iranyekan-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   body {
     @apply text-gray-900;
+    font-family: 'IranYekan', 'Dana', system-ui, -apple-system, sans-serif;
   }
   
   h1 {
