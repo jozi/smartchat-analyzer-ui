@@ -58,7 +58,7 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
     const groups: { [key: string]: any[] } = {};
     
     messages.forEach(msg => {
-      const dateKey = new Date(msg.createdAt).toDateString();
+      const dateKey = new Date(msg.created_at).toDateString();
       if (!groups[dateKey]) {
         groups[dateKey] = [];
       }
@@ -84,7 +84,7 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
               <h2 className="text-lg font-bold">گفتگوی #{storedChatId}</h2>
               {conversation && (
                 <p className="text-xs opacity-90">
-                  {conversation.vendorUser} و {conversation.customerUser}
+                  فروشنده: {conversation.vendor_user} | خریدار: {conversation.customer_user}
                 </p>
               )}
             </div>
@@ -117,10 +117,10 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
           ) : conversation?.success ? (
             <div className="space-y-4">
               {/* Trigger Message Badge */}
-              {conversation.triggerMessage && (
+              {conversation.trigger_message && (
                 <div className="flex justify-center mb-4">
                   <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm shadow-sm">
-                    <span className="font-medium">پیام ماشه:</span> {conversation.triggerMessage}
+                    <span className="font-medium">پیام ماشه:</span> {conversation.trigger_message}
                   </div>
                 </div>
               )}
@@ -133,13 +133,13 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
                     {/* Date Separator */}
                     <div className="flex items-center justify-center my-4">
                       <div className="bg-white/80 backdrop-blur px-3 py-1 rounded-full text-xs text-gray-600 shadow-sm">
-                        {formatDate(messages[0].createdAt)}
+                        {formatDate(messages[0].created_at)}
                       </div>
                     </div>
 
                     {/* Messages for this date */}
                     {messages.map((msg, idx) => {
-                      const isVendor = msg.sender === conversation.vendorUser;
+                      const isVendor = String(msg.sender) === String(conversation.vendor_user);
                       
                       return (
                         <div
@@ -167,7 +167,7 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
                             
                             {/* Message time */}
                             <div className="text-xs text-gray-500 mt-1 text-left">
-                              {formatTime(msg.createdAt)}
+                              {formatTime(msg.created_at)}
                             </div>
 
                             {/* Message tail */}
@@ -203,8 +203,8 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
           <div className="flex items-center justify-between text-xs text-gray-600">
             {conversation && (
               <>
-                <span>تعداد پیام‌ها: {conversation.messagesCount}</span>
-                <span>شناسه گفتگو: {conversation.conversationId}</span>
+                <span>تعداد پیام‌ها: {conversation.messages_count}</span>
+                <span>شناسه گفتگو: {conversation.conversation_id}</span>
               </>
             )}
           </div>

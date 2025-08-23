@@ -49,18 +49,20 @@ export interface Message {
   sender: string;
   receiver: string;
   message: string;
-  createdAt: string;
+  created_at: string;
 }
 
 export interface Conversation {
   success: boolean;
-  storedChatId: number;
-  conversationId: string;
+  stored_chat_id: number;
+  conversation_id: string;
   messages: Message[];
-  messagesCount: number;
-  firstUser: string;
-  secondUser: string;
-  vendorUser: string;
-  customerUser: string;
-  triggerMessage: string;
+  messages_count: number;
+  first_user: string;
+  second_user: string;
+  vendor_user: string;
+  customer_user: string;
+  is_user_one_vendor: boolean;
+  is_user_two_vendor: boolean;
+  trigger_message: string;
 }
