@@ -60,6 +60,11 @@ export const ApiService = {
     return data;
   },
 
+  async getConversationDetail(storedChatId: number): Promise<any> {
+    const { data } = await api.get(`/api/conversation-detail/${storedChatId}`);
+    return data;
+  },
+
   async submitFeedback(resultId: number, feedback: 'confirm' | 'reject', reason?: string): Promise<void> {
     const params = new URLSearchParams();
     params.append('feedback', feedback);

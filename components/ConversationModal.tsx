@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { ApiService } from '@/lib/api';
 import { Conversation } from '@/lib/types';
 
@@ -10,6 +11,7 @@ interface ConversationModalProps {
 }
 
 export default function ConversationModal({ storedChatId, onClose }: ConversationModalProps) {
+  const router = useRouter();
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [loading, setLoading] = useState(true);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -89,14 +91,25 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
               )}
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                router.push(`/conversation/${storedChatId}`);
+                onClose();
+              }}
+              className="px-3 py-1 bg-white/20 hover:bg-white/30 rounded-lg text-sm transition-colors"
+            >
+              مشاهده جزئیات
+            </button>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Chat Container with WhatsApp-like background */}

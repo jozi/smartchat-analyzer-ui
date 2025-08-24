@@ -69,6 +69,30 @@ export default function ResultsList({
                   <strong>پیام ماشه:</strong> {result.trigger_message}
                 </p>
                 
+                {/* Flagged Messages Display */}
+                {result.flagged_messages_count > 0 && (
+                  <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-sm font-semibold text-red-700 mb-2">
+                      🚨 پیام‌های مشکوک ({result.flagged_messages_count} پیام)
+                    </p>
+                    {result.flagged_message_ids && result.flagged_message_ids.slice(0, 3).map((msgId, index) => (
+                      <div key={msgId} className="text-xs bg-white p-2 rounded mb-1 border-l-4 border-red-400">
+                        <span className="font-mono text-red-600">پیام #{msgId}</span>
+                        {result.flagged_messages_details && result.flagged_messages_details[index] && (
+                          <span className="text-gray-600 mr-2">
+                            - {result.flagged_messages_details[index].reason || result.flagged_messages_details[index].indicator}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                    {result.flagged_messages_count > 3 && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        و {result.flagged_messages_count - 3} پیام دیگر...
+                      </p>
+                    )}
+                  </div>
+                )}
+                
                 {/* GPT Analysis Details */}
                 <div className="mt-3 space-y-2">
                   {result.is_wholesale && result.wholesale_score && (

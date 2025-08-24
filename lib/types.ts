@@ -18,6 +18,16 @@ export interface Stats {
   fraudDetectionRate: number;
 }
 
+export interface FlaggedMessageDetail {
+  msg_id: string;
+  reason?: string;
+  indicator?: string;
+  negotiation_text?: string;
+  fraud_type?: string;
+  type?: string;
+  detection_type: string;
+}
+
 export interface AnalysisResult {
   id: number;
   stored_chat_id: number;
@@ -39,6 +49,9 @@ export interface AnalysisResult {
   analyzed_at: string;
   human_feedback_confirms_gpt?: boolean;
   human_feedback_reason?: string;
+  flagged_message_ids?: string[];
+  flagged_messages_details?: FlaggedMessageDetail[];
+  flagged_messages_count?: number;
 }
 
 export interface DashboardData {
