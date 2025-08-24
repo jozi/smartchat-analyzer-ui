@@ -116,6 +116,15 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
             </div>
           ) : conversation ? (
             <div className="space-y-4">
+              {/* Trigger Message Badge */}
+              {conversation.trigger_message && (
+                <div className="flex justify-center mb-4">
+                  <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm shadow-sm">
+                    <span className="font-medium">پیام ماشه:</span> {conversation.trigger_message}
+                  </div>
+                </div>
+              )}
+              
               {/* Flagged Messages Summary */}
               {conversation.analysis?.flagged_message_ids?.length > 0 && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3 mx-2">
