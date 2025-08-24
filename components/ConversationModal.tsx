@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import { ApiService } from '@/lib/api';
 import { Conversation } from '@/lib/types';
 
@@ -11,7 +10,6 @@ interface ConversationModalProps {
 }
 
 export default function ConversationModal({ storedChatId, onClose }: ConversationModalProps) {
-  const router = useRouter();
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [loading, setLoading] = useState(true);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -29,7 +27,7 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
 
   const fetchConversation = async () => {
     try {
-      const data = await ApiService.getConversation(storedChatId);
+      const data = await ApiService.getConversationDetail(storedChatId);
       setConversation(data);
     } catch (error) {
       console.error('Error fetching conversation:', error);
@@ -91,25 +89,14 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                router.push(`/conversation/${storedChatId}`);
-                onClose();
-              }}
-              className="px-3 py-1 bg-white/20 hover:bg-white/30 rounded-lg text-sm transition-colors"
-            >
-              مشاهده جزئیات
-            </button>
-            <button
-              onClick={onClose}
-              className="w-8 h-8 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 rounded-full hover:bg-white/20 transition-colors flex items-center justify-center"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
 
         {/* Chat Container with WhatsApp-like background */}
@@ -127,13 +114,16 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
                 <p className="mt-4 text-gray-600">در حال بارگیری گفتگو...</p>
               </div>
             </div>
-          ) : conversation?.success ? (
+          ) : conversation ? (
             <div className="space-y-4">
-              {/* Trigger Message Badge */}
-              {conversation.trigger_message && (
-                <div className="flex justify-center mb-4">
-                  <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm shadow-sm">
-                    <span className="font-medium">پیام ماشه:</span> {conversation.trigger_message}
+              {/* Flagged Messages Summary */}
+              {conversation.analysis?.flagged_message_ids?.length > 0 && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3 mx-2">
+                  <p className="text-sm font-semibold text-red-700 mb-2">
+                    🚨 هوش مصنوعی {conversation.analysis.flagged_message_ids.length} پیام مشکوک پیدا کرد
+                  </p>
+                  <div className="text-xs text-gray-600">
+                    پیام‌های مشکوک با رنگ قرمز مشخص شده‌اند
                   </div>
                 </div>
               )}
@@ -153,6 +143,10 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
                     {/* Messages for this date */}
                     {messages.map((msg, idx) => {
                       const isVendor = String(msg.sender) === String(conversation.vendor_user);
+                      const isFlagged = conversation.analysis?.flagged_message_ids?.includes(String(msg.id));
+                      const flagDetails = conversation.analysis?.flagged_messages_details?.find(
+                        detail => String(detail.msg_id) === String(msg.id)
+                      );
                       
                       return (
                         <div
@@ -162,12 +156,21 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
                           <div 
                             className={`
                               relative max-w-[70%] px-4 py-2 rounded-2xl shadow-sm
-                              ${isVendor 
-                                ? 'bg-[#dcf8c6] rounded-br-none' 
-                                : 'bg-white rounded-bl-none'
+                              ${isFlagged 
+                                ? 'bg-red-100 border-2 border-red-400' 
+                                : isVendor 
+                                  ? 'bg-[#dcf8c6] rounded-br-none' 
+                                  : 'bg-white rounded-bl-none'
                               }
                             `}
                           >
+                            {/* AI Detection Badge */}
+                            {isFlagged && flagDetails && (
+                              <div className="bg-red-500 text-white text-xs px-2 py-1 rounded-full mb-2 inline-block">
+                                🚨 AI تشخیص داد: {flagDetails.detection_type || 'مشکوک'}
+                              </div>
+                            )}
+
                             {/* Message sender name */}
                             <div className={`text-xs font-medium mb-1 ${isVendor ? 'text-green-700' : 'text-blue-700'}`}>
                               {isVendor ? 'فروشنده' : 'خریدار'}
@@ -177,6 +180,15 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
                             <div className="text-sm text-gray-800 whitespace-pre-wrap break-words">
                               {msg.message}
                             </div>
+
+                            {/* AI Detection Reason */}
+                            {isFlagged && flagDetails && (
+                              <div className="mt-2 pt-2 border-t border-red-300">
+                                <p className="text-xs text-red-700">
+                                  {flagDetails.reason || flagDetails.indicator || 'هوش مصنوعی این پیام را مشکوک تشخیص داد'}
+                                </p>
+                              </div>
+                            )}
                             
                             {/* Message time */}
                             <div className="text-xs text-gray-500 mt-1 text-left">
@@ -184,13 +196,15 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
                             </div>
 
                             {/* Message tail */}
-                            <div 
-                              className={`absolute top-0 w-0 h-0 ${
-                                isVendor 
-                                  ? 'right-[-8px] border-t-[15px] border-t-[#dcf8c6] border-l-[8px] border-l-transparent' 
-                                  : 'left-[-8px] border-t-[15px] border-t-white border-r-[8px] border-r-transparent'
-                              }`}
-                            />
+                            {!isFlagged && (
+                              <div 
+                                className={`absolute top-0 w-0 h-0 ${
+                                  isVendor 
+                                    ? 'right-[-8px] border-t-[15px] border-t-[#dcf8c6] border-l-[8px] border-l-transparent' 
+                                    : 'left-[-8px] border-t-[15px] border-t-white border-r-[8px] border-r-transparent'
+                                }`}
+                              />
+                            )}
                           </div>
                         </div>
                       );

@@ -73,16 +73,35 @@ export interface Message {
 }
 
 export interface Conversation {
-  success: boolean;
   stored_chat_id: number;
   conversation_id: string;
-  messages: Message[];
-  messages_count: number;
-  first_user: string;
-  second_user: string;
-  vendor_user: string;
-  customer_user: string;
-  is_user_one_vendor: boolean;
-  is_user_two_vendor: boolean;
+  trigger_message_id: string;
   trigger_message: string;
+  messages: Message[];
+  analysis?: {
+    is_exit_detected_by_gpt: boolean;
+    exit_detection_score_gpt: number;
+    exit_detection_reason_gpt: string;
+    is_wholesale_detected_by_gpt: boolean;
+    wholesale_detection_score_gpt: number;
+    wholesale_detection_reason_gpt: string;
+    is_export_detected_by_gpt: boolean;
+    export_detection_score_gpt: number;
+    export_detection_reason_gpt: string;
+    is_price_negotiation_detected_by_gpt: boolean;
+    price_negotiation_intensity: string;
+    price_negotiation_reason_gpt: string;
+    flagged_message_ids: string[];
+    flagged_messages_details: FlaggedMessageDetail[];
+    analyzed_at: string;
+  };
+  // Legacy fields for backward compatibility
+  success?: boolean;
+  messages_count?: number;
+  first_user?: string;
+  second_user?: string;
+  vendor_user?: string;
+  customer_user?: string;
+  is_user_one_vendor?: boolean;
+  is_user_two_vendor?: boolean;
 }
