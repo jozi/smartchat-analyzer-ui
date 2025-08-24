@@ -60,8 +60,10 @@ export default function FraudResultsModal({ isOpen, onClose, results }: FraudRes
               <div className="text-sm text-gray-600 mt-1">کل گزارش‌ها</div>
             </div>
             <div className="bg-white rounded-lg p-4 text-center">
-              <div className="text-3xl font-bold text-blue-600">{results.stats.analyzed}</div>
-              <div className="text-sm text-gray-600 mt-1">تحلیل شده</div>
+              <div className="text-3xl font-bold text-blue-600">
+                {results.stats.analyzed_in_this_batch || results.stats.analyzed}
+              </div>
+              <div className="text-sm text-gray-600 mt-1">تحلیل شده در این دسته</div>
             </div>
             <div className="bg-white rounded-lg p-4 text-center">
               <div className="text-3xl font-bold text-red-600">{results.stats.fraud_detected}</div>
@@ -72,6 +74,27 @@ export default function FraudResultsModal({ isOpen, onClose, results }: FraudRes
               <div className="text-sm text-gray-600 mt-1">نرخ تشخیص</div>
             </div>
           </div>
+          
+          {/* Progress Info */}
+          {results.stats.total_analyzed_so_far && (
+            <div className="mt-4 bg-blue-50 rounded-lg p-3">
+              <div className="flex justify-between items-center">
+                <div className="text-sm">
+                  <strong>پیشرفت کلی:</strong> {results.stats.total_analyzed_so_far} از {results.stats.total_reports} گزارش تحلیل شده
+                </div>
+                {results.stats.remaining !== undefined && results.stats.remaining > 0 && (
+                  <div className="text-sm text-gray-600">
+                    {results.stats.remaining} گزارش باقی مانده
+                  </div>
+                )}
+              </div>
+              {results.stats.analyzed_range && (
+                <div className="text-xs text-gray-500 mt-1">
+                  محدوده تحلیل شده: {results.stats.analyzed_range}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Fraud Cases */}

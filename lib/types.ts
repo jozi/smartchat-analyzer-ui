@@ -1,6 +1,7 @@
-export type FilterType = 'all' | 'wholesale' | 'export' | 'exit' | 'price_negotiation' | 'combined';
+export type FilterType = 'all' | 'wholesale' | 'export' | 'exit' | 'price_negotiation' | 'fraud' | 'combined';
 
 export interface Stats {
+  totalAnalyzedCount: number;
   wholesaleCount: number;
   exportCount: number;
   exitCount: number;
@@ -32,6 +33,8 @@ export interface AnalysisResult {
   exit_score: number;
   is_price_negotiation: boolean;
   price_negotiation_score: number;
+  is_fraud: boolean;
+  fraud_score: number;
   gpt_response?: string;
   analyzed_at: string;
   human_feedback_confirms_gpt?: boolean;
@@ -45,6 +48,7 @@ export interface DashboardData {
   results: AnalysisResult[];
   currentPage: number;
   totalPages: number;
+  totalFilteredResults: number;
 }
 
 export interface Message {

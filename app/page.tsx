@@ -116,6 +116,8 @@ export default function HomePage() {
           currentFilter={filter}
           onFilterChange={setFilter}
           resultCount={data?.results?.length || 0}
+          totalFilteredResults={data?.totalFilteredResults}
+          stats={data?.stats}
         />
 
         {/* Results List */}

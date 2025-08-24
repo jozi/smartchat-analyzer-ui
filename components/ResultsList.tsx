@@ -59,6 +59,11 @@ export default function ResultsList({
                       🤝 مذاکره ({result.price_negotiation_score}/10)
                     </span>
                   )}
+                  {result.is_fraud && (
+                    <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">
+                      🚨 کلاهبرداری ({result.fraud_score}/10)
+                    </span>
+                  )}
                 </div>
                 <p className="text-gray-700 mb-2">
                   <strong>پیام ماشه:</strong> {result.trigger_message}
@@ -91,6 +96,13 @@ export default function ResultsList({
                     <div className="text-sm bg-yellow-50 p-2 rounded">
                       <strong className="text-yellow-700">مذاکره قیمت:</strong>
                       <span className="text-gray-700"> امتیاز {result.price_negotiation_score}/10</span>
+                    </div>
+                  )}
+                  
+                  {result.is_fraud && result.fraud_score && (
+                    <div className="text-sm bg-orange-50 p-2 rounded">
+                      <strong className="text-orange-700">کلاهبرداری احتمالی:</strong>
+                      <span className="text-gray-700"> ریسک {result.fraud_score}/10</span>
                     </div>
                   )}
                   

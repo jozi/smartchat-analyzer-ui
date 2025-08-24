@@ -173,6 +173,25 @@ export default function ControlPanel({
           <div className="mt-2 text-sm text-gray-600">
             این قابلیت چت‌های کاربرانی که به دلیل جعل هویت گزارش شده‌اند را بررسی می‌کند
           </div>
+          <button
+            onClick={async () => {
+              if (confirm('آیا می‌خواهید وضعیت تحلیل کلاهبرداری را ریست کنید؟')) {
+                try {
+                  const response = await fetch('http://localhost:8000/reset-fraud-state', {
+                    method: 'POST'
+                  });
+                  if (response.ok) {
+                    alert('وضعیت ریست شد. تحلیل بعدی از ابتدا شروع می‌شود.');
+                  }
+                } catch (error) {
+                  console.error('Error resetting fraud state:', error);
+                }
+              }
+            }}
+            className="mt-2 text-xs text-orange-600 hover:text-orange-700 underline"
+          >
+            ریست وضعیت تحلیل
+          </button>
         </div>
       )}
     </div>
