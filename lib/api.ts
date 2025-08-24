@@ -44,7 +44,7 @@ export const ApiService = {
     const params = new URLSearchParams();
     params.append('analysis_limit', analysisLimit.toString());
     
-    await api.post('/analyze-stored-chats', params, {
+    await api.post('/analyze-stored-chats-optimized', params, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
