@@ -53,24 +53,25 @@ export default function FraudResultsModal({ isOpen, onClose, results }: FraudRes
         </div>
 
         {/* Stats */}
+        {results.stats && (
         <div className="bg-gray-50 p-6 border-b">
           <div className="grid grid-cols-4 gap-4">
             <div className="bg-white rounded-lg p-4 text-center">
-              <div className="text-3xl font-bold text-gray-800">{results.stats.total_reports}</div>
+              <div className="text-3xl font-bold text-gray-800">{results.stats.total_reports || 0}</div>
               <div className="text-sm text-gray-600 mt-1">کل گزارش‌ها</div>
             </div>
             <div className="bg-white rounded-lg p-4 text-center">
               <div className="text-3xl font-bold text-blue-600">
-                {results.stats.analyzed_in_this_batch || results.stats.analyzed}
+                {results.stats.analyzed_in_this_batch || results.stats.analyzed || 0}
               </div>
               <div className="text-sm text-gray-600 mt-1">تحلیل شده در این دسته</div>
             </div>
             <div className="bg-white rounded-lg p-4 text-center">
-              <div className="text-3xl font-bold text-red-600">{results.stats.fraud_detected}</div>
+              <div className="text-3xl font-bold text-red-600">{results.stats.fraud_detected || 0}</div>
               <div className="text-sm text-gray-600 mt-1">کلاهبرداری تشخیص داده شده</div>
             </div>
             <div className="bg-white rounded-lg p-4 text-center">
-              <div className="text-3xl font-bold text-orange-600">{results.stats.detection_rate}%</div>
+              <div className="text-3xl font-bold text-orange-600">{results.stats.detection_rate || 0}%</div>
               <div className="text-sm text-gray-600 mt-1">نرخ تشخیص</div>
             </div>
           </div>
@@ -96,12 +97,13 @@ export default function FraudResultsModal({ isOpen, onClose, results }: FraudRes
             </div>
           )}
         </div>
+        )}
 
         {/* Fraud Cases */}
         <div className="p-6 overflow-y-auto" style={{ maxHeight: '400px' }}>
           <h3 className="text-lg font-semibold mb-4">موارد کلاهبرداری تشخیص داده شده:</h3>
           
-          {results.fraud_cases.length === 0 ? (
+          {!results.fraud_cases || results.fraud_cases.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -110,7 +112,7 @@ export default function FraudResultsModal({ isOpen, onClose, results }: FraudRes
             </div>
           ) : (
             <div className="space-y-4">
-              {results.fraud_cases.map((fraudCase, index) => (
+              {(results.fraud_cases || []).map((fraudCase, index) => (
                 <div key={index} className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <div className="flex justify-between items-start mb-3">
                     <div>
