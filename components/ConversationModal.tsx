@@ -27,8 +27,23 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
 
   const fetchConversation = async () => {
     try {
-      const data = await ApiService.getConversationDetail(storedChatId);
-      setConversation(data);
+      // First get the conversation with vendor/customer info
+      const conversationData = await ApiService.getConversation(storedChatId);
+      
+      // Then get the detail with flagged messages
+      const detailData = await ApiService.getConversationDetail(storedChatId);
+      
+      // Merge both responses
+      const merged = {
+        ...conversationData,
+        ...detailData,
+        vendor_user: conversationData.vendor_user,
+        customer_user: conversationData.customer_user,
+        messages: conversationData.messages, // Use messages from conversation API
+        analysis: detailData.analysis
+      };
+      
+      setConversation(merged);
     } catch (error) {
       console.error('Error fetching conversation:', error);
     } finally {
@@ -114,7 +129,7 @@ export default function ConversationModal({ storedChatId, onClose }: Conversatio
                 <p className="mt-4 text-gray-600">در حال بارگیری گفتگو...</p>
               </div>
             </div>
-          ) : conversation ? (
+          ) : conversation?.success ? (
             <div className="space-y-4">
               {/* Trigger Message Badge */}
               {conversation.trigger_message && (
