@@ -105,6 +105,8 @@ export default function HomePage() {
         <ControlPanel
           totalStoredChats={data?.totalStoredChats || 0}
           unanalyzedChats={data?.unanalyzedChats || 0}
+          totalFlagged={data?.totalFlagged || 0}
+          alreadyAnalyzed={data?.alreadyAnalyzed || 0}
           onFetchChats={handleFetchChats}
           onAnalyzeChats={handleAnalyzeChats}
           onResetAnalysis={handleResetAnalysis}

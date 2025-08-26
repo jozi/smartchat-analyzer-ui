@@ -5,6 +5,8 @@ import { useState } from 'react';
 interface ControlPanelProps {
   totalStoredChats: number;
   unanalyzedChats: number;
+  totalFlagged?: number;
+  alreadyAnalyzed?: number;
   onFetchChats: (limit: number) => Promise<void>;
   onAnalyzeChats: (limit: number) => Promise<void>;
   onResetAnalysis: () => Promise<void>;
@@ -14,6 +16,8 @@ interface ControlPanelProps {
 export default function ControlPanel({
   totalStoredChats,
   unanalyzedChats,
+  totalFlagged = 0,
+  alreadyAnalyzed = 0,
   onFetchChats,
   onAnalyzeChats,
   onResetAnalysis,
@@ -92,6 +96,7 @@ export default function ControlPanel({
           </div>
           <div className="mt-3 text-sm text-gray-600">
             <strong>{totalStoredChats}</strong> چت ذخیره شده |{' '}
+            <strong>{totalFlagged}</strong> علامت‌گذاری شده |{' '}
             <strong>{unanalyzedChats}</strong> آماده تحلیل
           </div>
         </div>
@@ -127,6 +132,17 @@ export default function ControlPanel({
             />
             <span className="text-sm text-gray-500">حداکثر ۱۰۰۰</span>
           </div>
+          {totalFlagged > 0 && (
+            <div className="mt-2 text-sm text-gray-600">
+              <strong>{alreadyAnalyzed}</strong> تحلیل شده از{' '}
+              <strong>{totalFlagged}</strong> علامت‌گذاری شده
+              {totalFlagged > alreadyAnalyzed && (
+                <span className="ml-2 text-primary-600">
+                  ({totalFlagged - alreadyAnalyzed} باقیمانده)
+                </span>
+              )}
+            </div>
+          )}
           <div className="mt-3 flex gap-2">
             <button
               onClick={onResetAnalysis}
