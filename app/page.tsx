@@ -99,13 +99,15 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Model Selector */}
-        <div className="mb-6">
-          <ModelSelector />
+        {/* Stats Grid with Model Selector */}
+        <div className="grid lg:grid-cols-3 gap-6 mb-6">
+          <div className="lg:col-span-2">
+            {data && <StatsGrid stats={data.stats} />}
+          </div>
+          <div className="lg:col-span-1">
+            <ModelSelector />
+          </div>
         </div>
-
-        {/* Stats Grid */}
-        {data && <StatsGrid stats={data.stats} />}
 
         {/* Control Panel */}
         <ControlPanel
