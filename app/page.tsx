@@ -6,6 +6,7 @@ import ControlPanel from '@/components/ControlPanel';
 import ResultsList from '@/components/ResultsList';
 import FilterBar from '@/components/FilterBar';
 import FraudResultsModal from '@/components/FraudResultsModal';
+import ModelSelector from '@/components/ModelSelector';
 import { ApiService } from '@/lib/api';
 import { DashboardData, FilterType } from '@/lib/types';
 
@@ -96,6 +97,11 @@ export default function HomePage() {
           <p className="text-gray-600">
             تشخیص هوشمند سفارش‌های عمده، صادراتی، خروج از پلتفرم و مذاکره قیمت با قدرت هوش مصنوعی
           </p>
+        </div>
+
+        {/* Model Selector */}
+        <div className="mb-6">
+          <ModelSelector />
         </div>
 
         {/* Stats Grid */}
