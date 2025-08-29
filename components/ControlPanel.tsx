@@ -7,7 +7,7 @@ interface ControlPanelProps {
   unanalyzedChats: number;
   totalFlagged?: number;
   alreadyAnalyzed?: number;
-  onFetchChats: (limit: number) => Promise<void>;
+  onFetchChats: (limit: number, filterClass?: string) => Promise<void>;
   onAnalyzeChats: (limit: number) => Promise<void>;
   onResetAnalysis: () => Promise<void>;
   onAnalyzeFraud?: (limit: number) => Promise<void>;
@@ -24,6 +24,7 @@ export default function ControlPanel({
   onAnalyzeFraud,
 }: ControlPanelProps) {
   const [fetchLimit, setFetchLimit] = useState(1000);
+  const [fetchFilterClass, setFetchFilterClass] = useState('all');
   const [analyzeLimit, setAnalyzeLimit] = useState(100);
   const [fraudLimit, setFraudLimit] = useState(50);
   const [fetchLoading, setFetchLoading] = useState(false);
@@ -33,7 +34,7 @@ export default function ControlPanel({
   const handleFetch = async () => {
     setFetchLoading(true);
     try {
-      await onFetchChats(fetchLimit);
+      await onFetchChats(fetchLimit, fetchFilterClass);
     } finally {
       setFetchLoading(false);
     }
@@ -92,6 +93,17 @@ export default function ControlPanel({
               className="w-32 px-3 py-2 border rounded-lg"
               placeholder="تعداد"
             />
+            <select
+              value={fetchFilterClass}
+              onChange={(e) => setFetchFilterClass(e.target.value)}
+              className="px-3 py-2 border rounded-lg text-sm"
+            >
+              <option value="all">همه کلاس‌ها</option>
+              <option value="wholesale">فقط عمده</option>
+              <option value="export">فقط صادرات</option>
+              <option value="exit">فقط خروج</option>
+              <option value="price_negotiation">فقط مذاکره قیمت</option>
+            </select>
             <span className="text-sm text-gray-500">حداکثر ۵۰۰ هزار</span>
           </div>
           <div className="mt-3 text-sm text-gray-600">

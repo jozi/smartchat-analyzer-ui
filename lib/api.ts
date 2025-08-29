@@ -29,9 +29,10 @@ export const ApiService = {
     }
   },
 
-  async fetchAndStoreChats(limit: number): Promise<void> {
+  async fetchAndStoreChats(limit: number, filterClass: string = 'all'): Promise<void> {
     const params = new URLSearchParams();
     params.append('limit', limit.toString());
+    params.append('filter_class', filterClass);
     
     await api.post('/fetch-and-store-chats', params, {
       headers: {

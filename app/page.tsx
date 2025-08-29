@@ -33,9 +33,9 @@ export default function HomePage() {
     }
   };
 
-  const handleFetchChats = async (limit: number) => {
+  const handleFetchChats = async (limit: number, filterClass?: string) => {
     try {
-      await ApiService.fetchAndStoreChats(limit);
+      await ApiService.fetchAndStoreChats(limit, filterClass || 'all');
       await fetchDashboardData();
     } catch (error) {
       console.error('Error fetching chats:', error);
