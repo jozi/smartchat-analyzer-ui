@@ -62,12 +62,19 @@ export default function ControlPanel({
   return (
     <div className="card mb-6">
       <h2 className="text-xl font-semibold mb-4">پنل کنترل</h2>
+      <div className="mb-4 p-3 bg-blue-50 rounded-lg text-sm">
+        <div className="flex items-center gap-4">
+          <span className="font-medium">📊 پایگاه داده‌ها:</span>
+          <span className="text-blue-700">🗄️ Raw Chats (3.6M پیام از 7 روز)</span>
+          <span className="text-green-700">✅ Analysis DB ({totalStoredChats} پیام تحلیل شده)</span>
+        </div>
+      </div>
       
       <div className="grid md:grid-cols-2 gap-6">
         {/* Fetch Section */}
         <div className="border-r-0 md:border-r-2 border-gray-200 pr-0 md:pr-6">
           <h3 className="text-lg font-medium mb-3 text-primary-600">
-            مرحله ۱: دریافت و ذخیره چت‌ها
+            مرحله ۱: جستجو و فیلتر چت‌های مشکوک از Raw DB
           </h3>
           <div className="flex items-center gap-3">
             <button
